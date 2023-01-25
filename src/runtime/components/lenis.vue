@@ -4,11 +4,11 @@
    </div>
 </template>
 <script>
-import { defineComponent, ref, onMounted, onBeforeUnmount, inject } from "vue";
+import { defineComponent, ref, onMounted, onBeforeUnmount, inject, onUpdated } from "vue";
 
 export default defineComponent({
    props: ["options"],
-   setup({options}) {
+   setup({ options }, { emit }) {
       const Lenis = inject("Lenis");
       var lenisVS = null;
       const lenisContent = ref(null);
@@ -27,22 +27,27 @@ export default defineComponent({
          },
          options || {}
       );
+
       onMounted(() => {
          if (process.client) {
             lenisVS = new Lenis();
-            lenisVS.on(
-               "scroll",
-               ({ scroll, limit, velocity, direction, progress }) => {
-                  console.log({ scroll, limit, velocity, direction, progress });
-               }
-            );
+            lenisVS.on("scroll", (scrollData) => emit("scroll", scrollData));
             requestAnimationFrame(raf);
          }
       });
 
       onBeforeUnmount(() => {
          if (!lenisVS) return;
+         lenisVS.off("scroll");
          lenisVS.destroy();
+      });
+
+      onUpdated(() => {
+         if (!lenisVS) return;
+         console.log(onUpdated);
+         lenisVS.off("scroll");
+         lenisVS.destroy();
+         lenisVS = new Lenis();
       });
 
       const raf = (time) => {

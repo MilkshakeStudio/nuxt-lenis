@@ -1,5 +1,5 @@
 <template>
-   <lenis :options="vsOptions" id="test">
+   <lenis :options="vsOptions" id="test" @scroll="test">
          {{ vsOptions }}
          <h1>hello world</h1>
          <div></div>
@@ -20,7 +20,9 @@
 
 <script setup>
 import { ref } from "vue";
-
+const test = (ev)=>{
+   console.log('ev',ev)
+}
 const vsOptions = ref(false);
 vsOptions.value = {
    duration: 3,
