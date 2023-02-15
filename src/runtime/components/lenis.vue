@@ -3,15 +3,27 @@
       <slot />
    </div>
 </template>
+
 <script>
-import { defineComponent, ref, onMounted, onBeforeUnmount, inject, onUpdated } from "vue";
+import {
+   defineComponent,
+   ref,
+   onMounted,
+   onBeforeUnmount,
+   inject,
+   onUpdated,
+} from "vue";
 
 export default defineComponent({
    props: ["options"],
    setup({ options }, { emit }) {
       const Lenis = inject("Lenis");
-      var lenisVS = null;
+      const setScrollState = inject("setScrollState");
+      const lenisVS = ref(0);
       const lenisContent = ref(null);
+      /**
+       * Starting options - for full list of options visit https://github.com/studio-freight/lenis
+       */
       const lenisOptions = Object.assign(
          {},
          {
@@ -27,33 +39,50 @@ export default defineComponent({
          },
          options || {}
       );
-
+      // On mounted set new Lenis instance
       onMounted(() => {
-         if (process.client) {
-            lenisVS = new Lenis();
-            lenisVS.on("scroll", (scrollData) => emit("scroll", scrollData));
-            requestAnimationFrame(raf);
-         }
+         initLenis();
       });
-
+      // Destroy on unmount
       onBeforeUnmount(() => {
-         if (!lenisVS) return;
-         lenisVS.off("scroll");
-         lenisVS.destroy();
+         destroyLenis();
       });
 
       onUpdated(() => {
-         if (!lenisVS) return;
-         console.log(onUpdated);
-         lenisVS.off("scroll");
-         lenisVS.destroy();
-         lenisVS = new Lenis();
+         if (!lenisVS.value) return;
+         lenisVS.value.off("scroll");
+         lenisVS.value.destroy();
+         lenisVS.value = new Lenis();
       });
+      const initLenis = () => {
+         if (process.client) {
+            lenisVS.value = new Lenis();
+            lenisVS.value.on("scroll", (scrollData) => {
+               setScrollState(scrollData);
+               emit("scroll", scrollData);
+            });
+            requestAnimationFrame(raf);
+         } else {
+            throw new Error("Process Client is false");
+         }
+      };
 
       const raf = (time) => {
-         if (!lenisVS) return;
-         lenisVS.raf(time);
+         if (!lenisVS.value) return;
+         lenisVS.value.raf(time);
          requestAnimationFrame(raf);
+      };
+
+      const destroyLenis = () => {
+         if (!lenisVS.value) return;
+         setScrollState(false);
+         lenisVS.value.off("scroll");
+         lenisVS.value.destroy();
+      };
+      return {
+         destroyLenis,
+         lenisContent,
+         lenisVS,
       };
    },
 });
