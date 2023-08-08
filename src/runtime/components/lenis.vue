@@ -13,12 +13,12 @@ import {
    inject,
    onUpdated,
 } from "vue";
-
 export default defineComponent({
    props: ["options"],
    setup({ options }, { emit }) {
       const Lenis = inject("Lenis");
       const setScrollState = inject("setScrollState");
+      const setLenis = inject("setLenis");
       const lenisVS = ref(0);
       const lenisContent = ref(null);
       /**
@@ -61,6 +61,8 @@ export default defineComponent({
                setScrollState(scrollData);
                emit("scroll", scrollData);
             });
+            setLenis(lenisVS.value);
+            emit("initiated", { lenis: lenisVS.value });
             requestAnimationFrame(raf);
          } else {
             throw new Error("Process Client is false");
@@ -81,6 +83,7 @@ export default defineComponent({
       };
       return {
          destroyLenis,
+         initLenis,
          lenisContent,
          lenisVS,
       };
