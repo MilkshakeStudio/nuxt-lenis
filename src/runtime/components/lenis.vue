@@ -12,6 +12,7 @@ import {
    onBeforeUnmount,
    inject,
    onUpdated,
+   reactive
 } from "vue";
 export default defineComponent({
    props: ["options"],
@@ -24,21 +25,24 @@ export default defineComponent({
       /**
        * Starting options - for full list of options visit https://github.com/studio-freight/lenis
        */
-      const lenisOptions = Object.assign(
-         {},
-         {
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: "vertical",
-            gestureDirection: "vertical",
-            smooth: true,
-            mouseMultiplier: 1,
-            smoothTouch: false,
-            touchMultiplier: 2,
-            infinite: false,
-         },
-         options || {}
+      const lenisOptions = reactive(
+         Object.assign(
+            {},
+            {
+               duration: 1.2,
+               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+               direction: "vertical",
+               gestureDirection: "vertical",
+               smooth: true,
+               mouseMultiplier: 1,
+               smoothTouch: false,
+               touchMultiplier: 2,
+               infinite: false,
+            },
+            options || {}
+         )
       );
+
       // On mounted set new Lenis instance
       onMounted(() => {
          initLenis();
@@ -54,9 +58,10 @@ export default defineComponent({
          lenisVS.value.destroy();
          lenisVS.value = new Lenis();
       });
+
       const initLenis = () => {
          if (process.client) {
-            lenisVS.value = new Lenis();
+            lenisVS.value = new Lenis(lenisOptions);
             lenisVS.value.on("scroll", (scrollData) => {
                setScrollState(scrollData);
                emit("scroll", scrollData);

@@ -22,7 +22,7 @@ import { ref, inject, watch, onMounted } from 'vue'
 const scrollState = inject('scrollState')
 const lenisRef = ref(null)
 const vsOptions = ref({
-  duration: 3,
+  duration: .2,
   direction: 'Horizontal',
   touchMultiplier: 20,
   infinite: false
