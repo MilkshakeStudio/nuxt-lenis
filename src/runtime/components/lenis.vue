@@ -97,12 +97,23 @@ export default defineComponent({
 </script>
 
 <style>
-html {
-   scroll-behavior: initial;
+html.lenis {
+  height: auto;
 }
-html,
-body {
-   min-height: 100%;
-   height: auto;
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
 </style>
