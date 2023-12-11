@@ -21,7 +21,7 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     addPlugin: true
   },
-   setup (options, nuxt) {
+  setup (options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
     addImports([
       {
