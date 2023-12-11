@@ -6,47 +6,52 @@
 
 <script>
 import {
+   computed,
    defineComponent,
-   ref,
-   onMounted,
-   onBeforeUnmount,
    inject,
+   onBeforeUnmount,
+   onMounted,
    onUpdated,
-   reactive
+   reactive,
+   ref,
+   toRefs,
+   watch,
 } from "vue";
+
 export default defineComponent({
    props: ["options"],
-   setup({ options }, { emit }) {
+   setup(props, { emit }) {
       const Lenis = inject("Lenis");
       const setScrollState = inject("setScrollState");
       const setLenis = inject("setLenis");
       const lenisVS = ref(0);
+      const lenisRaf = ref(null);
       const lenisContent = ref(null);
+      const {options} = toRefs(props)
+
       /**
        * Starting options - for full list of options visit https://github.com/studio-freight/lenis
        */
-      const lenisOptions = reactive(
-         Object.assign(
-            {},
-            {
-               duration: 1.2,
-               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-               direction: "vertical",
-               gestureDirection: "vertical",
-               smooth: true,
-               mouseMultiplier: 1,
-               smoothTouch: false,
-               touchMultiplier: 2,
-               infinite: false,
-            },
-            options || {}
-         )
-      );
+      const lenisOptions = computed(() => {
+         return {
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: "vertical",
+            gestureDirection: "vertical",
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+            ...options.value
+         }
+      });
 
       // On mounted set new Lenis instance
       onMounted(() => {
          initLenis();
       });
+
       // Destroy on unmount
       onBeforeUnmount(() => {
          destroyLenis();
@@ -54,21 +59,25 @@ export default defineComponent({
 
       onUpdated(() => {
          if (!lenisVS.value) return;
-         lenisVS.value.off("scroll");
-         lenisVS.value.destroy();
-         lenisVS.value = new Lenis();
+         if (!lenisOptions.autoResize) lenisVS.value.resize();
       });
+
+      watch(lenisOptions, (newVal) => {
+         if (!lenisVS.value) return;
+         destroyLenis();
+         initLenis();
+      })
 
       const initLenis = () => {
          if (process.client) {
-            lenisVS.value = new Lenis(lenisOptions);
+            lenisVS.value = new Lenis(lenisOptions.value);
             lenisVS.value.on("scroll", (scrollData) => {
                setScrollState(scrollData);
                emit("scroll", scrollData);
             });
             setLenis(lenisVS.value);
             emit("initiated", { lenis: lenisVS.value });
-            requestAnimationFrame(raf);
+            lenisRaf.value = requestAnimationFrame(raf);
          } else {
             throw new Error("Process Client is false");
          }
@@ -85,7 +94,9 @@ export default defineComponent({
          setScrollState(false);
          lenisVS.value.off("scroll");
          lenisVS.value.destroy();
+         cancelAnimationFrame(lenisRaf.value);
       };
+
       return {
          destroyLenis,
          initLenis,
