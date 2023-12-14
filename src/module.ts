@@ -1,4 +1,3 @@
-import { fileURLToPath } from 'url'
 import {
   addComponent,
   defineNuxtModule,
@@ -22,7 +21,7 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     addPlugin: true
   },
-  async setup (options, nuxt) {
+  setup (options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
     addImports([
       {
