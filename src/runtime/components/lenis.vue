@@ -12,7 +12,6 @@ import {
    onBeforeUnmount,
    onMounted,
    onUpdated,
-   reactive,
    ref,
    toRefs,
    watch,
