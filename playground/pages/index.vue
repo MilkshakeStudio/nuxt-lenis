@@ -1,33 +1,33 @@
 <template>
-   <div id="wrapper" ref="wrapper">
-      <lenis
-         id="test"
-         ref="lenisRef"
-         :options="vsOptions"
-         @scroll="scrollEmitter"
-      >
-         <div>
-            <h2>Index Page</h2>
-            <p>Playground for lenis scroll plugin for nuxt</p>
-         </div>
+   <lenis
+      id="wrapper"
+      ref="lenisRef"
+      :options="vsOptions"
+      @scroll="scrollEmitter"
+      @initiated="initiated"
+   >
+      <!-- <div id="content"> -->
+      <div>
+         <h2 @click="stop">STOP</h2>
+         <h2 @click="start">START</h2>
+         <p>Playground for lenis scroll plugin for nuxt</p>
+      </div>
 
-         <div></div>
-         <div></div>
-         <div></div>
-      </lenis>
-   </div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <!-- </div> -->
+   </lenis>
 </template>
 
 <script setup>
 import { ref, reactive, inject, watch, onMounted } from "vue";
 
 const scrollState = inject("scrollState");
-const wrapper = ref(null);
 const lenisRef = ref(null);
+const lenisVs = ref(false);
 const vsOptions = reactive({
-   content: "#test",
-   // duration: 0.2,
-   // direction: "Horizontal",
+   wrapper: "#wrapper",
    touchMultiplier: 20,
    infinite: false,
 });
@@ -43,7 +43,16 @@ watch(vsOptions, (newVal) => {
 const scrollEmitter = (val) => {
    // console.log("scrollEmitter", val);
 };
+const stop = (val) => {
+   console.log("lenisVs", lenisVs.value);
+   lenisVs.value.stop();
+};
+const start = (val) => {
+   console.log("lenisVs", lenisVs.value);
+   lenisVs.value.start();
+};
 
+const initiated = ({ lenis }) => (lenisVs.value = lenis);
 const changeOptions = () => {
    console.log("🐯 changing options");
    vsOptions.duration = vsOptions.duration > 5 ? 0.1 : 10;
@@ -55,17 +64,24 @@ onMounted(() => {
 </script>
 
 <style>
-#test {
-   min-height: 100%;
+/* #test {
    height: auto;
-}
-#test > div {
+} */
+#wrapper div {
    min-height: 50vh;
    margin-bottom: 300px;
-   background: red;
+   background: beige;
    width: 100%;
 }
 
+#wrapper {
+   max-height: 100vh;
+   /* height: auto; */
+   /* pointer-events: none; */
+}
+#content {
+   height: auto;
+}
 .fixed {
    position: fixed;
    top: 100px;

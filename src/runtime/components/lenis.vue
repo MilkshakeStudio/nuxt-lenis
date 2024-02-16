@@ -1,6 +1,7 @@
 <template>
-   <div ref="lenisContent">
-      <slot />
+   <div ref="lenisWrapper">
+      <div v-if="options.wrapper" ref="lenisContent"><slot /></div>
+      <slot v-else />
    </div>
 </template>
 
@@ -24,6 +25,8 @@ export default defineComponent({
       const setLenis = inject("setLenis");
       const lenisVS = ref(0);
       const lenisRaf = ref(null);
+      const mainContent = ref(null);
+      const lenisWrapper = ref(null);
       const lenisContent = ref(null);
 
       /**
@@ -46,15 +49,9 @@ export default defineComponent({
 
       // On mounted set new Lenis instance
       onMounted(() => {
-         if (lenisOptions.value.content) {
-            lenisOptions.value.content = document.querySelector(
-               lenisOptions.value.content
-            );
-         }
          if (lenisOptions.value.wrapper) {
-            lenisOptions.value.wrapper = document.querySelector(
-               lenisOptions.value.wrapper
-            );
+            lenisOptions.value.wrapper = lenisWrapper.value;
+            lenisOptions.value.content = lenisWrapper.value.children[0];
          }
          initLenis();
       });
@@ -107,7 +104,7 @@ export default defineComponent({
       return {
          destroyLenis,
          initLenis,
-         lenisContent,
+         lenisWrapper,
          lenisVS,
       };
    },
@@ -121,6 +118,7 @@ html.lenis {
 
 .lenis.lenis-smooth {
    scroll-behavior: auto !important;
+   overflow: hidden;
 }
 
 .lenis.lenis-smooth [data-lenis-prevent] {
@@ -133,5 +131,8 @@ html.lenis {
 
 .lenis.lenis-scrolling iframe {
    pointer-events: none;
+}
+#test {
+   width: 90vw;
 }
 </style>

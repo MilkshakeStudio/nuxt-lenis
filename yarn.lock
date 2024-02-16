@@ -1714,10 +1714,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/merge-streams/-/merge-streams-2.2.1.tgz#82b5e1e135ef62ef8b522d6e7f43ad360a69f294"
   integrity sha512-255V7MMIKw6aQ43Wbqp9HZ+VHn6acddERTLiiLnlcPLU9PdTq9Aijl12oklAgUEblLWye+vHLzmqBx6f2TGcZw==
 
-"@studio-freight/lenis@^1.0.30":
-  version "1.0.35"
-  resolved "https://registry.yarnpkg.com/@studio-freight/lenis/-/lenis-1.0.35.tgz#039d1064363306f6554b8d676421db647dffd770"
-  integrity sha512-dduQqZERC5EaJSVGBoCt2WdPFQlr39zFewkQxvJcYZrMl1aVTPPIQCnZMqIjl4KZBQIL3kIXes+HP22T9XVh4w==
+"@studio-freight/lenis@1.0.27":
+  version "1.0.27"
+  resolved "https://registry.yarnpkg.com/@studio-freight/lenis/-/lenis-1.0.27.tgz#1a333e192efa1a036074f7dcffba847d4c45f6d1"
+  integrity sha512-1I6EaWR9rxdFjIJtF52CtETJt9ngfY4AjawrJY5pLxCvHa/lQZ+1v2gTUntwNZkuks6E2It6YEXV6jnpnCZFjA==
 
 "@trysound/sax@0.2.0":
   version "0.2.0"
