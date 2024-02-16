@@ -26,7 +26,6 @@ export default defineComponent({
       const lenisVS = ref(0);
       const lenisRaf = ref(null);
       const lenisContent = ref(null);
-      const { options } = toRefs(props);
 
       /**
        * Starting options - for full list of options visit https://github.com/studio-freight/lenis
@@ -42,7 +41,7 @@ export default defineComponent({
             smoothTouch: false,
             touchMultiplier: 2,
             infinite: false,
-            ...options.value,
+            ...props.options.value,
          };
       });
 
