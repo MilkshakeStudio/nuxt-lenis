@@ -1,5 +1,5 @@
 <template>
-   <div ref="lenisContent" >
+   <div ref="lenisContent">
       <slot />
    </div>
 </template>
@@ -13,7 +13,6 @@ import {
    onMounted,
    onUpdated,
    ref,
-   toRefs,
    watch,
 } from "vue";
 
@@ -41,12 +40,22 @@ export default defineComponent({
             smoothTouch: false,
             touchMultiplier: 2,
             infinite: false,
-            ...props.options.value,
+            ...props.options,
          };
       });
 
       // On mounted set new Lenis instance
       onMounted(() => {
+         if (lenisOptions.value.content) {
+            lenisOptions.value.content = document.querySelector(
+               lenisOptions.value.content
+            );
+         }
+         if (lenisOptions.value.wrapper) {
+            lenisOptions.value.wrapper = document.querySelector(
+               lenisOptions.value.wrapper
+            );
+         }
          initLenis();
       });
 
@@ -106,12 +115,23 @@ export default defineComponent({
 </script>
 
 <style>
-html {
-   scroll-behavior: initial;
-}
-html,
-body {
-   min-height: 100%;
+html.lenis {
    height: auto;
+}
+
+.lenis.lenis-smooth {
+   scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+   overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+   overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+   pointer-events: none;
 }
 </style>
