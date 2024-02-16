@@ -1,6 +1,6 @@
 {
    "name": "nuxt-lenis",
-   "version": "1.0.4",
+   "version": "1.0.5",
    "license": "MIT",
    "type": "module",
    "repository": {
@@ -31,7 +31,7 @@
    },
    "dependencies": {
       "@nuxt/kit": "^3.6.5",
-      "@studio-freight/lenis": "^1.0.25"
+      "@studio-freight/lenis": "^1.0.30"
    },
    "devDependencies": {
       "@nuxt/devtools": "^0.8.5",

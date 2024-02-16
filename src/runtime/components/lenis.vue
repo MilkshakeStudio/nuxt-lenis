@@ -1,5 +1,5 @@
 <template>
-   <div ref="lenisContent">
+   <div ref="lenisContent" >
       <slot />
    </div>
 </template>
@@ -26,7 +26,7 @@ export default defineComponent({
       const lenisVS = ref(0);
       const lenisRaf = ref(null);
       const lenisContent = ref(null);
-      const {options} = toRefs(props)
+      const { options } = toRefs(props);
 
       /**
        * Starting options - for full list of options visit https://github.com/studio-freight/lenis
@@ -42,8 +42,8 @@ export default defineComponent({
             smoothTouch: false,
             touchMultiplier: 2,
             infinite: false,
-            ...options.value
-         }
+            ...options.value,
+         };
       });
 
       // On mounted set new Lenis instance
@@ -58,14 +58,14 @@ export default defineComponent({
 
       onUpdated(() => {
          if (!lenisVS.value) return;
-         if (!lenisOptions.autoResize) lenisVS.value.resize();
+         if (!lenisOptions.value.autoResize) lenisVS.value.resize();
       });
 
       watch(lenisOptions, (newVal) => {
          if (!lenisVS.value) return;
          destroyLenis();
          initLenis();
-      })
+      });
 
       const initLenis = () => {
          if (process.client) {

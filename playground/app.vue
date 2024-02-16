@@ -22,9 +22,11 @@
 <style>
 * {
    box-sizing: border-box;
+
+
 }
-div {
-   padding: 10px;
+body{
+   margin: 0;
 }
 
 header {
