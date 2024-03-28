@@ -21,12 +21,14 @@ export default defineComponent({
    props: ["options"],
    setup(props, { emit }) {
       const Lenis = inject("Lenis");
+      // const useLenis = inject("useLenis");
+      // const { setScrollState, setLenis } = useLenis();
       const setScrollState = inject("setScrollState");
       const setLenis = inject("setLenis");
       const lenisVS = ref(0);
       const lenisRaf = ref(null);
-      const mainContent = ref(null);
       const lenisWrapper = ref(null);
+      const mainContent = ref(null);
       const lenisContent = ref(null);
 
       /**

@@ -22,12 +22,17 @@
 
 <script setup>
 import { ref, reactive, inject, watch, onMounted } from "vue";
+import { useLenis } from "../../dist/runtime/composables/useLenis";
+const { scrollState } = useLenis();
 
-const scrollState = inject("scrollState");
+// watch(scrollState, (val) => {
+//    console.log(val);
+// });
+// const scrollState = inject("scrollState");
 const lenisRef = ref(null);
 const lenisVs = ref(false);
 const vsOptions = reactive({
-   wrapper: "#wrapper",
+   // wrapper: "#wrapper",
    touchMultiplier: 20,
    infinite: false,
 });

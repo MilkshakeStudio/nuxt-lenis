@@ -1,31 +1,29 @@
 <template>
-  <div>
-    <header>
-      <h1>Nuxt Lenis scroller</h1>
-      <nav>
-        <nuxt-link to="/">
-          Index
-        </nuxt-link> &nbsp;
-        <nuxt-link to="/about">
-          About
-        </nuxt-link>
-      </nav>
-    </header>
-    <nuxt-page />
-  </div>
+   <div>
+      <header>
+         <h1>Nuxt Lenis scroller</h1>
+         <nav>
+            <nuxt-link to="/"> Index </nuxt-link> &nbsp;
+            <nuxt-link to="/about"> About </nuxt-link>
+         </nav>
+      </header>
+      <nuxt-page />
+   </div>
 </template>
 
 <script setup>
+// const { scrollState } = useLenis();
 
+// watch(scrollState, (val) => {
+//    console.log(val);
+// });
 </script>
 
 <style>
 * {
    box-sizing: border-box;
-
-
 }
-body{
+body {
    margin: 0;
 }
 
