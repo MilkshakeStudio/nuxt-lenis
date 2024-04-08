@@ -5,111 +5,93 @@
    </div>
 </template>
 
-<script>
-import {
-   computed,
-   defineComponent,
-   inject,
-   onBeforeUnmount,
-   onMounted,
-   onUpdated,
-   ref,
-   watch,
-} from "vue";
+<script setup>
+const Lenis = inject("Lenis");
+const setScrollState = inject("setScrollState");
+const setLenis = inject("setLenis");
+const lenisVS = ref(0);
+const lenisRaf = ref(null);
+const lenisWrapper = ref(null);
+const lenisContent = ref(null);
 
-export default defineComponent({
-   props: ["options"],
-   setup(props, { emit }) {
-      const Lenis = inject("Lenis");
-      // const useLenis = inject("useLenis");
-      // const { setScrollState, setLenis } = useLenis();
-      const setScrollState = inject("setScrollState");
-      const setLenis = inject("setLenis");
-      const lenisVS = ref(0);
-      const lenisRaf = ref(null);
-      const lenisWrapper = ref(null);
-      const mainContent = ref(null);
-      const lenisContent = ref(null);
-
-      /**
-       * Starting options - for full list of options visit https://github.com/studio-freight/lenis
-       */
-      const lenisOptions = computed(() => {
-         return {
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: "vertical",
-            gestureDirection: "vertical",
-            smooth: true,
-            mouseMultiplier: 1,
-            smoothTouch: false,
-            touchMultiplier: 2,
-            infinite: false,
-            ...props.options,
-         };
-      });
-
-      // On mounted set new Lenis instance
-      onMounted(() => {
-         if (lenisOptions.value.wrapper) {
-            lenisOptions.value.wrapper = lenisWrapper.value;
-            lenisOptions.value.content = lenisWrapper.value.children[0];
-         }
-         initLenis();
-      });
-
-      // Destroy on unmount
-      onBeforeUnmount(() => {
-         destroyLenis();
-      });
-
-      onUpdated(() => {
-         if (!lenisVS.value) return;
-         if (!lenisOptions.value.autoResize) lenisVS.value.resize();
-      });
-
-      watch(lenisOptions, (newVal) => {
-         if (!lenisVS.value) return;
-         destroyLenis();
-         initLenis();
-      });
-
-      const initLenis = () => {
-         if (process.client) {
-            lenisVS.value = new Lenis(lenisOptions.value);
-            lenisVS.value.on("scroll", (scrollData) => {
-               setScrollState(scrollData);
-               emit("scroll", scrollData);
-            });
-            setLenis(lenisVS.value);
-            emit("initiated", { lenis: lenisVS.value });
-            lenisRaf.value = requestAnimationFrame(raf);
-         } else {
-            throw new Error("Process Client is false");
-         }
-      };
-
-      const raf = (time) => {
-         if (!lenisVS.value) return;
-         lenisVS.value.raf(time);
-         requestAnimationFrame(raf);
-      };
-
-      const destroyLenis = () => {
-         if (!lenisVS.value) return;
-         setScrollState(false);
-         lenisVS.value.off("scroll");
-         lenisVS.value.destroy();
-         cancelAnimationFrame(lenisRaf.value);
-      };
-
-      return {
-         destroyLenis,
-         initLenis,
-         lenisWrapper,
-         lenisVS,
-      };
+// >> PROPS
+const props = defineProps({
+   options: {
+      type: Object,
+      default: {
+         duration: 1.2,
+         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+         direction: "vertical",
+         gestureDirection: "vertical",
+         smooth: true,
+         mouseMultiplier: 1,
+         smoothTouch: false,
+         touchMultiplier: 2,
+         infinite: false,
+      },
    },
+});
+// >> WATCHERS
+watch(props.options, (newVal) => {
+   if (!lenisVS.value) return;
+   destroyLenis();
+   initLenis();
+});
+// >> METHODS
+const initLenis = () => {
+   if (process.client) {
+      lenisVS.value = new Lenis(props.options);
+      lenisVS.value.on("scroll", (scrollData) => {
+         setScrollState(scrollData);
+         emit("scroll", scrollData);
+      });
+      setLenis(lenisVS.value);
+      setScrollState(lenisVS.value);
+      emit("initiated", { lenis: lenisVS.value });
+      lenisRaf.value = requestAnimationFrame(raf);
+   } else {
+      throw new Error("Process Client is false");
+   }
+};
+
+const raf = (time) => {
+   if (!lenisVS.value) return;
+   lenisVS.value.raf(time);
+   requestAnimationFrame(raf);
+};
+
+const destroyLenis = () => {
+   if (!lenisVS.value) return;
+   setScrollState(false);
+   lenisVS.value.off("scroll");
+   lenisVS.value.destroy();
+   cancelAnimationFrame(lenisRaf.value);
+};
+
+// >> LIFECYCLE
+onMounted(() => {
+   if (props.options.wrapper) {
+      props.options.wrapper = lenisWrapper.value;
+      props.options.content = lenisWrapper.value.children[0];
+   }
+   initLenis();
+});
+
+// Destroy on unmount
+onBeforeUnmount(() => {
+   destroyLenis();
+});
+
+onUpdated(() => {
+   if (!lenisVS.value) return;
+   if (!props.options.autoResize) lenisVS.value.resize();
+});
+
+defineExpose({
+   destroyLenis,
+   initLenis,
+   lenisWrapper,
+   lenisVS,
 });
 </script>
 
