@@ -6,13 +6,16 @@
 </template>
 
 <script setup>
+import { ref, watch, onMounted, onBeforeUnmount, onUpdated, inject } from "vue";
+import { useLenis } from "#imports";
 const Lenis = inject("Lenis");
-const setScrollState = inject("setScrollState");
-const setLenis = inject("setLenis");
+const { setScrollState, setLenis } = useLenis();
+
 const lenisVS = ref(0);
 const lenisRaf = ref(null);
 const lenisWrapper = ref(null);
 const lenisContent = ref(null);
+const emit = defineEmits(["scroll", "initiated"]);
 
 // >> PROPS
 const props = defineProps({

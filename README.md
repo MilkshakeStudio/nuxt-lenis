@@ -4,7 +4,7 @@ This is a Nuxt wrapper for [Lenis](https://lenis.studiofreight.com/) by [Studio 
 
 ## Getting Started
 
-1. `yarn add nuxt-lenis`
+1. `yarn add @milkshake/nuxt-lenis`
 2. Add `@milkshake/nuxt-lenis` to your modules in nuxt.config
 3. In your `app.vue` file, wrap the nuxt page in the lenis component
    ```
