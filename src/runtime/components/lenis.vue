@@ -6,7 +6,15 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, onBeforeUnmount, onUpdated, inject } from "vue";
+import {
+   ref,
+   watch,
+   onMounted,
+   onBeforeUnmount,
+   onUpdated,
+   inject,
+   computed,
+} from "vue";
 import { useLenis } from "#imports";
 const Lenis = inject("Lenis");
 const { setScrollState, setLenis } = useLenis();
@@ -21,21 +29,30 @@ const emit = defineEmits(["scroll", "initiated"]);
 const props = defineProps({
    options: {
       type: Object,
-      default: {
-         duration: 1.2,
-         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-         direction: "vertical",
-         gestureDirection: "vertical",
-         smooth: true,
-         mouseMultiplier: 1,
-         smoothTouch: false,
-         touchMultiplier: 2,
-         infinite: false,
-      },
+      default: {},
    },
 });
+
+/**
+ * Starting options - for full list of options visit https://github.com/studio-freight/lenis
+ */
+const lenisOptions = computed(() => {
+   return {
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: "vertical",
+      gestureDirection: "vertical",
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+      infinite: false,
+      ...props.options,
+   };
+});
+
 // >> WATCHERS
-watch(props.options, (newVal) => {
+watch(lenisOptions, (newVal) => {
    if (!lenisVS.value) return;
    destroyLenis();
    initLenis();
@@ -43,7 +60,7 @@ watch(props.options, (newVal) => {
 // >> METHODS
 const initLenis = () => {
    if (process.client) {
-      lenisVS.value = new Lenis(props.options);
+      lenisVS.value = new Lenis(lenisOptions.value);
       lenisVS.value.on("scroll", (scrollData) => {
          setScrollState(scrollData);
          emit("scroll", scrollData);
