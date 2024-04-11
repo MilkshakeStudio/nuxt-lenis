@@ -25,7 +25,7 @@
 import { ref, reactive, watch, onMounted } from "vue";
 import { useLenis } from "#imports";
 // import { useLenis } from "#app";
-const { scrollState } = useLenis();
+const { scrollState, lenis:lenisN } = useLenis();
 const lenisRef = ref(null);
 const lenisVs = ref(false);
 const vsOptions = reactive({
@@ -34,9 +34,9 @@ const vsOptions = reactive({
    infinite: false,
 });
 
-watch(scrollState, (val) => {
-   console.log("scrollState", val);
-});
+// watch(()=>scrollState.value.wrapper, (val) => {
+//    console.log("scrollState", val);
+// },{deep:true});
 
 watch(vsOptions, (newVal) => {
    console.log("vsOptions newVal", newVal);

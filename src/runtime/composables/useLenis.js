@@ -1,14 +1,14 @@
 import { useState } from "#app";
 
 export function useLenis() {
-   const scrollState = useState("scrollState", () => null);
-   const lenisVS = useState("lenisVS", () => null);
+   const scrollState = useState("scrollState", () => []);
+   const lenisVS = useState("lenisVS", () => []);
 
-   const setScrollState = (newScrollState) => {
-      scrollState.value = newScrollState;
+   const setScrollState = (newScrollState, id) => {
+      scrollState.value[id] = newScrollState;
    };
-   const setLenis = (virtualScroll) => {
-      lenisVS.value = virtualScroll;
+   const setLenis = (virtualScroll,  id) => {
+      lenisVS.value[id] = virtualScroll;
    };
 
    return {

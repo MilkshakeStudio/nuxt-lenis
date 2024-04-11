@@ -50,6 +50,7 @@ const lenisOptions = computed(() => {
       ...props.options,
    };
 });
+const instanceId = computed(() => lenisWrapper.value.id ?? "LenisBase");
 
 // >> WATCHERS
 watch(lenisOptions, (newVal) => {
@@ -62,11 +63,11 @@ const initLenis = () => {
    if (process.client) {
       lenisVS.value = new Lenis(lenisOptions.value);
       lenisVS.value.on("scroll", (scrollData) => {
-         setScrollState(scrollData);
+         setScrollState(scrollData, instanceId.value);
          emit("scroll", scrollData);
       });
-      setLenis(lenisVS.value);
-      setScrollState(lenisVS.value);
+      setLenis(lenisVS.value, instanceId.value);
+      setScrollState(lenisVS.value, instanceId.value);
       emit("initiated", { lenis: lenisVS.value });
       lenisRaf.value = requestAnimationFrame(raf);
    } else {
@@ -82,7 +83,8 @@ const raf = (time) => {
 
 const destroyLenis = () => {
    if (!lenisVS.value) return;
-   setScrollState(false);
+   setScrollState(false, instanceId.value);
+   setLenis(false, instanceId.value);
    lenisVS.value.off("scroll");
    lenisVS.value.destroy();
    cancelAnimationFrame(lenisRaf.value);
