@@ -12,8 +12,8 @@ export function useLenis() {
    };
 
    return {
-      scrollState,
-      lenis: lenisVS,
+      scrollState: scrollState.length > 1 scrollState, scrollState.value[0],
+      lenis: lenisVS.length > 1 lenisVS, lenisVS.value[0],
       setScrollState,
       setLenis,
    };
