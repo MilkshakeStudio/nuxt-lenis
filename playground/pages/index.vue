@@ -10,31 +10,33 @@
       <div>
          <h2 @click="stop">STOP</h2>
          <h2 @click="start">START</h2>
+         <h2 @click="changeOptions">CHANGE</h2>
          <p>Playground for lenis scroll plugin for nuxt</p>
       </div>
 
-      <div></div>
-      <div></div>
-      <div></div>
+      <div />
+      <div />
+      <div />
       <!-- </div> -->
    </lenis>
 </template>
 
 <script setup>
-import { ref, reactive, inject, watch, onMounted } from "vue";
-
-const scrollState = inject("scrollState");
+import { ref, reactive, watch, onMounted } from "vue";
+import { useLenis } from "#imports";
+// import { useLenis } from "#app";
+const { scrollState, lenis:lenisN } = useLenis();
 const lenisRef = ref(null);
 const lenisVs = ref(false);
 const vsOptions = reactive({
-   wrapper: "#wrapper",
+   // wrapper: "#wrapper",
    touchMultiplier: 20,
    infinite: false,
 });
 
-watch(scrollState, (val) => {
-   console.log("scrollState", val);
-});
+// watch(()=>scrollState.value.wrapper, (val) => {
+//    console.log("scrollState", val);
+// },{deep:true});
 
 watch(vsOptions, (newVal) => {
    console.log("vsOptions newVal", newVal);
