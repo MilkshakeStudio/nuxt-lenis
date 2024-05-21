@@ -29,7 +29,7 @@ const emit = defineEmits(["scroll", "initiated"]);
 const props = defineProps({
    options: {
       type: Object,
-      default: {},
+      default: () => {},
    },
 });
 
@@ -138,7 +138,5 @@ html.lenis {
 .lenis.lenis-scrolling iframe {
    pointer-events: none;
 }
-#test {
-   width: 90vw;
-}
+
 </style>
