@@ -29,7 +29,7 @@ const emit = defineEmits(["scroll", "initiated"]);
 const props = defineProps({
    options: {
       type: Object,
-      default: {},
+      default: () => {},
    },
 });
 
