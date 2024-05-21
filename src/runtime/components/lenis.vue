@@ -138,7 +138,5 @@ html.lenis {
 .lenis.lenis-scrolling iframe {
    pointer-events: none;
 }
-#test {
-   width: 90vw;
-}
+
 </style>
