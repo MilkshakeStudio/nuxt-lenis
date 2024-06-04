@@ -27,7 +27,7 @@ export default defineNuxtModule<ModuleOptions>({
          {
             name: "default",
             as: "Lenis",
-            from: "@studio-freight/lenis",
+            from: "lenis",
          },
       ]);
       addPlugin(resolve("./runtime/plugin"));

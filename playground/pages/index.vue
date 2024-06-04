@@ -2,7 +2,6 @@
    <lenis
       id="wrapper"
       ref="lenisRef"
-      :options="vsOptions"
       @scroll="scrollEmitter"
       @initiated="initiated"
    >
@@ -17,6 +16,9 @@
       <div />
       <div />
       <div />
+      <div />
+      <div />
+      <div />
       <!-- </div> -->
    </lenis>
 </template>
@@ -25,43 +27,44 @@
 import { ref, reactive, watch, onMounted } from "vue";
 import { useLenis } from "#imports";
 // import { useLenis } from "#app";
-const { scrollState, lenis:lenisN } = useLenis();
+const { scrollState, lenis: lenisN } = useLenis();
 const lenisRef = ref(null);
 const lenisVs = ref(false);
-const vsOptions = reactive({
-   // wrapper: "#wrapper",
-   touchMultiplier: 20,
-   infinite: false,
-});
+const vsOptions = reactive({});
 
-// watch(()=>scrollState.value.wrapper, (val) => {
-//    console.log("scrollState", val);
-// },{deep:true});
+watch(
+   scrollState,
+   ({ scroll }) => {
+      console.log("scrollState", scroll);
+   },
+   { deep: true }
+);
 
 watch(vsOptions, (newVal) => {
-   console.log("vsOptions newVal", newVal);
+   // console.log("vsOptions newVal", newVal);
 });
 
 const scrollEmitter = (val) => {
    // console.log("scrollEmitter", val);
 };
 const stop = (val) => {
-   console.log("lenisVs", lenisVs.value);
+   // console.log("lenisVs", lenisVs.value);
    lenisVs.value.stop();
 };
 const start = (val) => {
-   console.log("lenisVs", lenisVs.value);
+   // console.log("lenisVs", lenisVs.value);
    lenisVs.value.start();
 };
 
 const initiated = ({ lenis }) => (lenisVs.value = lenis);
 const changeOptions = () => {
-   console.log("🐯 changing options");
+   // console.log("🐯 changing options");
    vsOptions.duration = vsOptions.duration > 5 ? 0.1 : 10;
 };
 
 onMounted(() => {
    console.log("Lenis Component ref :", lenisRef.value);
+   console.log("START------", scrollState.value?.wrapper);
 });
 </script>
 
@@ -69,21 +72,23 @@ onMounted(() => {
 /* #test {
    height: auto;
 } */
-#wrapper div {
+#wrapper div,
+#base div {
    min-height: 50vh;
    margin-bottom: 300px;
    background: beige;
    width: 100%;
+   &:nth-child(odd) {
+      background-color: pink;
+   }
 }
 
-#wrapper {
-   max-height: 100vh;
-   /* height: auto; */
-   /* pointer-events: none; */
+#wrapper,
+#base {
+   /* max-height: 50vh; */
+   /* overflow: hidden; */
 }
-#content {
-   height: auto;
-}
+
 .fixed {
    position: fixed;
    top: 100px;

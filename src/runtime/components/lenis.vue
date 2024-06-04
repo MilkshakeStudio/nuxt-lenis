@@ -1,6 +1,8 @@
 <template>
    <div ref="lenisWrapper">
-      <div v-if="options.wrapper" ref="lenisContent"><slot /></div>
+      <div v-if="options?.wrapper" id="lenis-content" ref="lenisContent">
+         <slot />
+      </div>
       <slot v-else />
    </div>
 </template>
@@ -13,6 +15,8 @@ import {
    onBeforeUnmount,
    onUpdated,
    inject,
+   reactive,
+   toRef,
    computed,
 } from "vue";
 import { useLenis } from "#imports";
@@ -32,24 +36,29 @@ const props = defineProps({
       default: () => {},
    },
 });
-
+const extraOptions = ref({});
+const options = toRef(props, "options");
 /**
  * Starting options - for full list of options visit https://github.com/studio-freight/lenis
  */
 const lenisOptions = computed(() => {
-   return {
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: "vertical",
-      gestureDirection: "vertical",
-      smooth: true,
-      mouseMultiplier: 1,
-      smoothTouch: false,
-      touchMultiplier: 2,
-      infinite: false,
-      ...props.options,
-   };
+   return Object.assign(
+      {},
+      {
+         duration: 1.2,
+         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+         direction: "vertical",
+         gestureDirection: "vertical",
+         syncTouch: true,
+         mouseMultiplier: 1,
+         touchMultiplier: 1,
+         infinite: false,
+      },
+      props.options,
+      extraOptions.value
+   );
 });
+
 const instanceId = computed(() => lenisWrapper.value.id ?? "LenisBase");
 
 // >> WATCHERS
@@ -58,6 +67,7 @@ watch(lenisOptions, (newVal) => {
    destroyLenis();
    initLenis();
 });
+
 // >> METHODS
 const initLenis = () => {
    if (process.client) {
@@ -92,9 +102,9 @@ const destroyLenis = () => {
 
 // >> LIFECYCLE
 onMounted(() => {
-   if (props.options.wrapper) {
-      props.options.wrapper = lenisWrapper.value;
-      props.options.content = lenisWrapper.value.children[0];
+   if (options?.value?.wrapper) {
+      extraOptions.value.wrapper = lenisWrapper.value;
+      extraOptions.value.content = lenisWrapper.value.children[0];
    }
    initLenis();
 });
@@ -118,13 +128,13 @@ defineExpose({
 </script>
 
 <style>
-html.lenis {
+html.lenis,
+html.lenis body {
    height: auto;
 }
 
 .lenis.lenis-smooth {
    scroll-behavior: auto !important;
-   overflow: hidden;
 }
 
 .lenis.lenis-smooth [data-lenis-prevent] {
@@ -135,8 +145,7 @@ html.lenis {
    overflow: hidden;
 }
 
-.lenis.lenis-scrolling iframe {
+.lenis.lenis-smooth iframe {
    pointer-events: none;
 }
-
 </style>
