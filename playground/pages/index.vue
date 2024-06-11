@@ -1,71 +1,77 @@
 <template>
-   <lenis
-      id="wrapper"
-      ref="lenisRef"
-      @scroll="scrollEmitter"
-      @initiated="initiated"
-   >
-      <!-- <div id="content"> -->
-      <div>
-         <h2 @click="stop">STOP</h2>
-         <h2 @click="start">START</h2>
-         <h2 @click="changeOptions">CHANGE</h2>
-         <p>Playground for lenis scroll plugin for nuxt</p>
-      </div>
+  <lenis
+    id="wrapper"
+    ref="lenisRef"
+    @scroll="scrollEmitter"
+    @initiated="initiated"
+  >
+    <!-- <div id="content"> -->
+    <div>
+      <h2 @click="stop">
+        STOP
+      </h2>
+      <h2 @click="start">
+        START
+      </h2>
+      <h2 @click="changeOptions">
+        CHANGE
+      </h2>
+      <p>Playground for lenis scroll plugin for nuxt</p>
+    </div>
 
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <!-- </div> -->
-   </lenis>
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <!-- </div> -->
+  </lenis>
 </template>
 
 <script setup>
-import { ref, reactive, watch, onMounted } from "vue";
-import { useLenis } from "#imports";
+import { ref, reactive, watch, onMounted } from 'vue'
+import { useLenis } from '#imports'
 // import { useLenis } from "#app";
-const { scrollState, lenis: lenisN } = useLenis();
-const lenisRef = ref(null);
-const lenisVs = ref(false);
-const vsOptions = reactive({});
+const { scrollState, lenis: lenisN } = useLenis()
+const lenisRef = ref(null)
+const lenisVs = ref(false)
+const vsOptions = reactive({})
 
 watch(
-   scrollState,
-   ({ scroll }) => {
-      console.log("scrollState", scroll);
-   },
-   { deep: true }
-);
+  scrollState,
+  ({ scroll }) => {
+    console.log('scrollState', scroll)
+  },
+  { deep: true }
+)
 
 watch(vsOptions, (newVal) => {
-   // console.log("vsOptions newVal", newVal);
-});
+  // console.log("vsOptions newVal", newVal);
+})
 
 const scrollEmitter = (val) => {
-   // console.log("scrollEmitter", val);
-};
+  // console.log("scrollEmitter", val);
+}
 const stop = (val) => {
-   // console.log("lenisVs", lenisVs.value);
-   lenisVs.value.stop();
-};
+  // console.log("lenisVs", lenisVs.value);
+  lenisVs.value.stop()
+}
 const start = (val) => {
-   // console.log("lenisVs", lenisVs.value);
-   lenisVs.value.start();
-};
+  // console.log("lenisVs", lenisVs.value);
+  lenisVs.value.start()
+}
 
-const initiated = ({ lenis }) => (lenisVs.value = lenis);
+const initiated = ({ lenis }) => (lenisVs.value = lenis)
 const changeOptions = () => {
-   // console.log("🐯 changing options");
-   vsOptions.duration = vsOptions.duration > 5 ? 0.1 : 10;
-};
+  // console.log("🐯 changing options");
+  vsOptions.duration = vsOptions.duration > 5 ? 0.1 : 10
+}
 
 onMounted(() => {
-   console.log("Lenis Component ref :", lenisRef.value);
-   console.log("START------", scrollState.value);
-});
+  console.log('Lenis Component ref :', lenisRef.value)
+  console.log('START------', scrollState.value)
+})
 </script>
 
 <style>
