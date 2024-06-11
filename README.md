@@ -20,6 +20,7 @@ This is a Nuxt wrapper for [Lenis](https://lenis.studiofreight.com/) by [Studio 
 ## Composable
 
 ```
+   <!-- You can pass in true or false into useLenis if you want to use more than one lenis instance. Defaults to single instance (true) -->
    const {scrollState, lenis} = useLenis()
 
    watch(scrollState, (val) => {
@@ -39,7 +40,7 @@ If you have multiple instances of Lenis you can get each one via an ID set ont h
    </lenis>
 
    <!-- script -->
-   const {scrollState, lenis} = useLenis()
+   const {scrollState, lenis} = useLenis(false)
 
    scrollState.value.base
    lenis.value.base

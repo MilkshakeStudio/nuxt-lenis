@@ -64,7 +64,7 @@ const changeOptions = () => {
 
 onMounted(() => {
    console.log("Lenis Component ref :", lenisRef.value);
-   console.log("START------", scrollState.value?.wrapper);
+   console.log("START------", scrollState.value);
 });
 </script>
 
