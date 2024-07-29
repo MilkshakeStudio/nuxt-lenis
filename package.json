@@ -1,11 +1,21 @@
 {
    "name": "nuxt-lenis",
-   "version": "1.2.2",
+   "version": "1.2.4",
    "license": "MIT",
    "type": "module",
    "repository": {
       "type": "git",
       "url": "git+https://github.com/MilkshakeStudio/nuxt-lenis.git"
+   },
+   "keywords": [
+      "nuxt",
+      "module",
+      "nuxt-module",
+      "lenis"
+   ],
+   "author": {
+      "name": "Milkshake Studio  <hello@milkshake.studio>",
+      "url": "https://milkshake.studio"
    },
    "exports": {
       ".": {
@@ -31,7 +41,7 @@
    },
    "dependencies": {
       "@nuxt/kit": "^3.6.5",
-      "lenis": "^1.1.1"
+      "lenis": "^1.1.8"
    },
    "devDependencies": {
       "@nuxt/devtools": "^0.8.5",

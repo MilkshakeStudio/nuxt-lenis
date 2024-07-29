@@ -5350,10 +5350,10 @@ lazystream@^1.0.0:
   dependencies:
     readable-stream "^2.0.5"
 
-lenis@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/lenis/-/lenis-1.1.1.tgz#92b6d480571e75085a398cdc92c900feda22d768"
-  integrity sha512-rRwkB+sYKiISc7Ttom4YX+lH+YD92y6ZsIdOjwQNDxWm/kMwp/e9cMprVeWSvsgeXyJ+zjjvhqQPcTvn9cBo5w==
+lenis@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/lenis/-/lenis-1.1.8.tgz#d4ee3e83a33f6e3799742b482e8e2a1173e6f261"
+  integrity sha512-oGqnhuc+yqkNb2Hr8rVmmRsElHHwsqYlukxuaQtRMZLIDhsnDI0gZZIuEwVwMPel5fG3t+kd6mk0K3O/Phj6rw==
   dependencies:
     "@darkroom.engineering/tempus" "^0.0.46"
 
@@ -8729,6 +8729,7 @@ word-wrap@^1.2.5:
   integrity sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==
 
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+  name wrap-ansi-cjs
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==

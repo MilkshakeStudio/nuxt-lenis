@@ -48,10 +48,6 @@ const lenisOptions = computed(() => {
          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
          direction: "vertical",
          gestureDirection: "vertical",
-         syncTouch: true,
-         mouseMultiplier: 1,
-         touchMultiplier: 1,
-         infinite: false,
       },
       props.options,
       extraOptions.value
@@ -114,8 +110,8 @@ onBeforeUnmount(() => {
 });
 
 onUpdated(() => {
-   if (!lenisVS.value) return;
-   if (!props.options.autoResize) lenisVS.value.resize();
+   // if (!lenisVS.value) return;
+   // if (!props.options?.autoResize) lenisVS.value.resize();
 });
 
 defineExpose({
