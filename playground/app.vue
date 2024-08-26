@@ -16,11 +16,7 @@
 </template>
 
 <script setup>
-// const { scrollState } = useLenis();
 
-// watch(scrollState, (val) => {
-//    console.log(val);
-// });
 </script>
 
 <style>
