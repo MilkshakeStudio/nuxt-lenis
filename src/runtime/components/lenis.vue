@@ -22,8 +22,8 @@ import { useLenis } from "#imports";
 const Lenis = inject("Lenis");
 const { setScrollState, setLenis } = useLenis();
 
-const lenisVS = ref(0);
-const lenisRaf = ref(null);
+var lenisVS = null;
+var lenisRaf = null;
 const lenisWrapper = ref(null);
 const lenisContent = ref(null);
 const emit = defineEmits(["scroll", "initiated"]);
@@ -58,7 +58,7 @@ const instanceId = computed(() => lenisWrapper.value.id ?? "LenisBase");
 
 // >> WATCHERS
 watch(lenisOptions, (newVal) => {
-   if (!lenisVS.value) return;
+   if (!lenisVS) return;
    destroyLenis();
    initLenis();
 });
@@ -66,33 +66,35 @@ watch(lenisOptions, (newVal) => {
 // >> METHODS
 const initLenis = () => {
    if (process.client) {
-      lenisVS.value = new Lenis(lenisOptions.value);
-      lenisVS.value.on("scroll", (scrollData) => {
+      lenisVS = new Lenis(lenisOptions.value);
+
+      lenisVS.on("scroll", (scrollData) => {
+         
          setScrollState(scrollData, instanceId.value);
          emit("scroll", scrollData);
       });
-      setLenis(lenisVS.value, instanceId.value);
-      setScrollState(lenisVS.value, instanceId.value);
-      emit("initiated", { lenis: lenisVS.value });
-      lenisRaf.value = requestAnimationFrame(raf);
+      setLenis(lenisVS, instanceId.value);
+      setScrollState(lenisVS, instanceId.value);
+      emit("initiated", { lenis: lenisVS });
+      lenisRaf = requestAnimationFrame(raf);
    } else {
       throw new Error("Process Client is false");
    }
 };
 
 const raf = (time) => {
-   if (!lenisVS.value) return;
-   lenisVS.value.raf(time);
+   if (!lenisVS) return;
+   lenisVS.raf(time);
    requestAnimationFrame(raf);
 };
 
 const destroyLenis = () => {
-   if (!lenisVS.value) return;
+   if (!lenisVS) return;
    setScrollState(false, instanceId.value);
    setLenis(false, instanceId.value);
-   lenisVS.value.off("scroll");
-   lenisVS.value.destroy();
-   cancelAnimationFrame(lenisRaf.value);
+   lenisVS.off("scroll");
+   lenisVS.destroy();
+   cancelAnimationFrame(lenisRaf);
 };
 
 // >> LIFECYCLE
