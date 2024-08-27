@@ -26,16 +26,16 @@
 
 <script setup>
 import { ref, reactive, watch, onMounted, computed } from "vue";
-import { useLenis  } from "#imports";
+import { useLenis } from "#imports";
 // import { useLenis } from "#app";
-const { scrollState, lenis: lenisN, lenisInstance } = useLenis(false);
+const { scrollState, lenis: lenisN, lenisInstance } = useLenis();
 const lenisRef = ref(null);
 var lenisLocalVS = null;
 const vsOptions = reactive({});
 
 watch(
-   ()=>scrollState.value.wrapper,
-   ({scroll,...props}) => {
+   ()=>scrollState,
+   ({ scroll, ...props }) => {
       console.log("WATCHER", props);
    },
    { deep: true }
@@ -49,19 +49,22 @@ const scrollEmitter = (val) => {
    // console.log("scrollEmitter", val);
 };
 const stop = (val) => {
-   lenisN.wrapper.stop();
+   // lenisN.wrapper.stop();
+   lenisN.value.stop();
    // lenisLocalVS.stop();
 };
 const start = (val) => {
    // console.log("lenisVs", lenisVs.value);
-   lenisN.wrapper.start();
+   // lenisN.wrapper.start();
+   lenisN.value.start();
+   console.log(lenisN);
+   
    // lenisLocalVS.start();
 };
 
-const handleClick = () => { 
-   console.log("scrollState------", lenisN.wrapper);
-
-}
+const handleClick = () => {
+   console.log("scrollState------", lenisN);
+};
 
 const initiated = ({ lenis }) => (lenisLocalVS = lenis);
 const changeOptions = () => {
@@ -72,8 +75,8 @@ const changeOptions = () => {
 onMounted(() => {
    // console.log("Lenis Component ref :", lenisRef.value);
    // console.log("lenisTest------", lenisInstance("wrapper").isStopped);
-   // console.log("lenisN------", lenisN.wrapper);
-   console.log("scrollState------", scrollState.value.wrapper.scroll);
+   console.log("lenisN------", lenisN.value);
+   console.log("scrollState------", scrollState.value);
 });
 </script>
 

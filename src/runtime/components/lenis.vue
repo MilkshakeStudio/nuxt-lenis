@@ -67,14 +67,17 @@ watch(lenisOptions, (newVal) => {
 const initLenis = () => {
    if (process.client) {
       lenisVS = new Lenis(lenisOptions.value);
+      
+      setLenis(lenisVS, instanceId.value);
+      setScrollState(lenisVS, instanceId.value);
+
 
       lenisVS.on("scroll", (scrollData) => {
-         
          setScrollState(scrollData, instanceId.value);
          emit("scroll", scrollData);
       });
-      setLenis(lenisVS, instanceId.value);
-      setScrollState(lenisVS, instanceId.value);
+
+     
       emit("initiated", { lenis: lenisVS });
       lenisRaf = requestAnimationFrame(raf);
    } else {
