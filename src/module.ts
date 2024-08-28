@@ -42,7 +42,7 @@ export default defineNuxtModule<ModuleOptions>({
 
       addComponent({
          name: "Lenis", // name of the component to be used in vue templates
-         filePath: resolve("./runtime/components", "Lenis.vue"),
+         filePath: resolve("./runtime/components", "lenis.vue"),
       });
    },
 });
