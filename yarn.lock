@@ -5350,10 +5350,10 @@ lazystream@^1.0.0:
   dependencies:
     readable-stream "^2.0.5"
 
-lenis@1.1.9:
-  version "1.1.9"
-  resolved "https://registry.yarnpkg.com/lenis/-/lenis-1.1.9.tgz#27d61daf614f8456a95d8b62d65fe61a7e625119"
-  integrity sha512-xU2UU1J8mJCiWBSfiMWsC/kPbQMIadSsJiEu3mVqptXGnwo/FUnfp8xCyiOJEvBwzqx4XDdB6TKYFn83y871vA==
+lenis@1.0.37:
+  version "1.1.11"
+  resolved "https://registry.yarnpkg.com/lenis/-/lenis-1.1.11.tgz#a7e8d93b49d58feaf7f5ba5144636d329621aa7b"
+  integrity sha512-ykl6sYWhECtD/9N1JiKhKCY10LEYnGaxgQzo5tFQcHlkD9zZx2ZSUydqk1Xtk/w13+ZGv9qMyhcG7d8s159ONQ==
   dependencies:
     "@darkroom.engineering/tempus" "^0.0.46"
 

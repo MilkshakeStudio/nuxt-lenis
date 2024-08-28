@@ -2,6 +2,11 @@
 
 This is a Nuxt wrapper for [Lenis](https://lenis.studiofreight.com/) by [Studio Freight](https://studiofreight.com/). Thank them for the incredible tool.
 
+
+### Please Note
+Because of how Vue/Nuxt `useState` works, we have to recreate the `ScrollState` to a new object. We are porting over all fields we find necessary as you can also grab `Lenis` for all methods and attributes.
+
+
 ## Getting Started
 
 1. `yarn add nuxt-lenis`
@@ -43,8 +48,8 @@ If you have multiple instances of Lenis you can get each one via an ID set ont h
    const {scrollState, lenis} = useLenis(false)
 
    scrollState.value.base
-   lenis.value.base
+   lenis.base
    scrollState.value.modal
-   lenis.value.modal
+   lenis.modal
 
 ```

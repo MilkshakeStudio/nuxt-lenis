@@ -1,6 +1,6 @@
 {
    "name": "nuxt-lenis",
-   "version": "1.2.4",
+   "version": "1.2.9",
    "license": "MIT",
    "type": "module",
    "repository": {
@@ -41,7 +41,7 @@
    },
    "dependencies": {
       "@nuxt/kit": "^3.6.5",
-      "lenis": "1.1.9"
+      "lenis": "^1.1.11"
    },
    "devDependencies": {
       "@nuxt/devtools": "^0.8.5",
