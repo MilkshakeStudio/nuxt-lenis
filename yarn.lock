@@ -324,11 +324,6 @@
   dependencies:
     mime "^3.0.0"
 
-"@darkroom.engineering/tempus@^0.0.46":
-  version "0.0.46"
-  resolved "https://registry.yarnpkg.com/@darkroom.engineering/tempus/-/tempus-0.0.46.tgz#3d958807503e4055fcc4a1aeeff83ca0546c62f0"
-  integrity sha512-s5vav3KMHYezvUCl4ee5epg0oimF6M8C9gAaKxFnFaTvX2q3ywFDryIv6XLd0mRFUt3S1uHDJqKaiEcs2ZVSvw==
-
 "@esbuild/aix-ppc64@0.20.2":
   version "0.20.2"
   resolved "https://registry.yarnpkg.com/@esbuild/aix-ppc64/-/aix-ppc64-0.20.2.tgz#a70f4ac11c6a1dfc18b8bbb13284155d933b9537"
@@ -5350,12 +5345,10 @@ lazystream@^1.0.0:
   dependencies:
     readable-stream "^2.0.5"
 
-lenis@1.0.37:
-  version "1.1.11"
-  resolved "https://registry.yarnpkg.com/lenis/-/lenis-1.1.11.tgz#a7e8d93b49d58feaf7f5ba5144636d329621aa7b"
-  integrity sha512-ykl6sYWhECtD/9N1JiKhKCY10LEYnGaxgQzo5tFQcHlkD9zZx2ZSUydqk1Xtk/w13+ZGv9qMyhcG7d8s159ONQ==
-  dependencies:
-    "@darkroom.engineering/tempus" "^0.0.46"
+lenis@^1.1.19:
+  version "1.1.19"
+  resolved "https://registry.yarnpkg.com/lenis/-/lenis-1.1.19.tgz#8c6d2d00832360714a8523f2d9aca800aba3b3bc"
+  integrity sha512-EWRYEqMMcnsQgFtr67jEKaVx1mn9Dgw1rM5iT4VxxUV6ln++Cq2nahglBko2aEiD4Lik357wkLBjOjdIwjnmdQ==
 
 levn@^0.4.1:
   version "0.4.1"

@@ -23,22 +23,21 @@ export default defineNuxtModule<ModuleOptions>({
    },
    setup(options, nuxt) {
       const { resolve } = createResolver(import.meta.url);
+
       addImports([
          {
             name: "default",
             as: "Lenis",
             from: "lenis",
          },
-      ]);
-      addPlugin(resolve("./runtime/plugin"));
-
-      addImports([
          {
             name: "useLenis",
             as: "useLenis",
             from: resolve("./runtime/composables/useLenis"),
          },
       ]);
+
+      addPlugin(resolve("./runtime/plugin"));
 
       addComponent({
          name: "Lenis", // name of the component to be used in vue templates

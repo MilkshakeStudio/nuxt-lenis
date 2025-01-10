@@ -1,11 +1,5 @@
 <template>
-   <lenis
-      id="wrapper"
-      ref="lenisRef"
-      @scroll="scrollEmitter"
-      @initiated="initiated"
-      @click="handleClick"
-   >
+   <lenis id="wrapper" ref="lenisRef" @click="handleClick">
       <!-- <div id="content"> -->
       <div>
          <h2 @click="stop">STOP</h2>
@@ -28,42 +22,28 @@
 import { ref, reactive, watch, onMounted, computed } from "vue";
 import { useLenis } from "#imports";
 // import { useLenis } from "#app";
-const { scrollState, lenis: lenisN, lenisInstance } = useLenis();
+
+// const scrollEmitter = (val) => {
+//    console.log("scrollEmitter", val);
+// };
+const { getScrollState } = useLenis();
 const lenisRef = ref(null);
-var lenisLocalVS = null;
 const vsOptions = reactive({});
 
 watch(
-   ()=>scrollState,
-   ({ scroll, ...props }) => {
-      console.log("WATCHER", props);
+   getScrollState,
+   (scroll) => {
+      console.log("WATCHER- SCROLL", scroll);
+      // console.log("WATCHER", val);
    },
    { deep: true }
 );
 
-watch(vsOptions, (newVal) => {
-   // console.log("vsOptions newVal", newVal);
-});
-
-const scrollEmitter = (val) => {
-   // console.log("scrollEmitter", val);
-};
-const stop = (val) => {
-   // lenisN.wrapper.stop();
-   lenisN.value.stop();
-   // lenisLocalVS.stop();
-};
-const start = (val) => {
-   // console.log("lenisVs", lenisVs.value);
-   // lenisN.wrapper.start();
-   lenisN.value.start();
-   console.log(lenisN);
-   
-   // lenisLocalVS.start();
-};
+const stop = (val) => {};
+const start = (val) => {};
 
 const handleClick = () => {
-   console.log("scrollState------", lenisN);
+   console.log("handleClick------", lenisRef.value);
 };
 
 const initiated = ({ lenis }) => (lenisLocalVS = lenis);
@@ -73,10 +53,7 @@ const changeOptions = () => {
 };
 
 onMounted(() => {
-   // console.log("Lenis Component ref :", lenisRef.value);
-   // console.log("lenisTest------", lenisInstance("wrapper").isStopped);
-   console.log("lenisN------", lenisN.value);
-   console.log("scrollState------", scrollState.value);
+   console.log("handleClick------");
 });
 </script>
 

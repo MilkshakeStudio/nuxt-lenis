@@ -1,47 +1,124 @@
-import { useState } from "#app";
-import { computed } from "#imports";
+import { useNuxtApp } from "#app";
 
-var lenisVS: Array<Object | Function> = [];
+import { watch, reactive, ref, computed } from "vue";
 
-export function useLenis(single: Boolean = true): Object {
-   const scrollState = useState("scrollState", () => []);
-   // const lenisVS = useState("lenisVS", () => []);
-   const ids = useState("ids", () => []);
+interface ScrollState {
+   scroll: number;
+   velocity: number;
+   progress: number;
+   isScrolling: boolean;
+   direction: number;
+}
 
-   const setScrollState = (newScrollState: Object, id: String | Number) => {
-      scrollState.value[id] = {
-         className: newScrollState?.className,
-         isHorizontal: newScrollState?.isHorizontal,
-         isLocked: newScrollState?.isLocked,
-         isScrolling: newScrollState?.isScrolling,
-         isSmooth: newScrollState?.isSmooth,
-         isStopped: newScrollState?.isStopped,
-         limit: newScrollState?.limit,
-         progress: newScrollState?.progress,
-         rootElement: newScrollState?.rootElement,
-         scroll: newScrollState?.scroll,
-         direction: newScrollState?.direction,
-         time: newScrollState?.time,
-         animatedScroll: newScrollState?.animatedScroll,
-         velocity: newScrollState?.velocity,
-         lastVelocity: newScrollState?.lastVelocity,
-         targetScroll: newScrollState?.targetScroll,
-      };
+const defaultScrollState: ScrollState = {
+   scroll: 0,
+   velocity: 0,
+   progress: 0,
+   isScrolling: false,
+   direction: 0,
+};
+
+const scrollStates = reactive<Record<string, Ref<ScrollState>>>({});
+const lenisInstances = reactive<Record<string, any>>({});
+const defaultInstance = ref<string | null>(null);
+
+export function useLenis(callback: Function, instanceId: string) {
+   const { $lenis } = useNuxtApp();
+
+   if (!$lenis) {
+      throw new Error("Lenis plugin is not initialized correctly.");
+   }
+
+   const updateDefaultInstance = () => {
+      const remainingIds = Object.keys(lenisInstances);
+      defaultInstance.value = remainingIds.length ? remainingIds[0] : null;
    };
-   const setLenis = (virtualScroll: Object, id: String | Number) => {
-      lenisVS[id] = virtualScroll;
-      ids.value.push(id);
+
+   const createLenis = (id: string, options: any) => {
+      if (!lenisInstances[id]) {
+         const instance = $lenis.createLenis(id, options);
+         lenisInstances[id] = instance;
+
+         if (!defaultInstance.value) {
+            defaultInstance.value = id;
+         }
+      }
+
+      return lenisInstances[id];
    };
+
+   const destroyLenis = (id: string) => {
+      if (lenisInstances[id]) {
+         $lenis.destroyLenis(id);
+         delete lenisInstances[id];
+         delete scrollStates[id];
+         updateDefaultInstance();
+      }
+   };
+
+   const setScrollState = (id: string, state: ScrollState) => {
+      if (!scrollStates[id]) {
+         scrollStates[id] = ref(state);
+      } else {
+         scrollStates[id].value = state;
+      }
+   };
+
    const getScrollState = computed(() => {
-      return single ? scrollState.value[ids.value[0]] : scrollState.value;
+      const targetId = defaultInstance.value;
+
+      if (!targetId || !scrollStates[targetId]?.value) {
+         console.warn(
+            `[Lenis] No valid scroll state found for ID "${targetId}". Falling back to default scroll state.`
+         );
+         return { ...defaultScrollState };
+      }
+
+      return scrollStates[targetId].value;
    });
-   const getLenis = computed(() => {
-      return single ? lenisVS[ids.value[0]] : lenisVS;
-   });
+
+   const getLenisInstance = (id?: string) => {
+      const targetId = id || defaultInstance.value;
+
+      if (!targetId || !lenisInstances[targetId]) {
+         console.warn(
+            `[Lenis] No valid Lenis instance found for ID "${id}". Returning a placeholder object.`
+         );
+         return {};
+      }
+
+      return lenisInstances[targetId];
+   };
+
+   // remove callback
+   const removeCallback = () => {
+      if (callback) {
+         const activeInstance = getLenisInstance(
+            instanceId ?? defaultInstance.value
+         );
+         activeInstance?.off("scroll", callback);
+      }
+   };
+
+   // watcher to setup callbacks on initial load
+   watch(defaultInstance, () => setupCallbacks());
+   // callback setup“
+   const setupCallbacks = () => {
+      console.log("setupCallbacks");
+      if (callback) {
+         const activeInstance = getLenisInstance(
+            instanceId ?? defaultInstance.value
+         );
+         activeInstance?.on("scroll", callback);
+      }
+   };
+
    return {
-      scrollState: single ? getScrollState : getScrollState.value,
-      lenis: single ? getLenis : getLenis.value,
+      createLenis,
+      destroyLenis,
       setScrollState,
-      setLenis,
+      getScrollState,
+      getLenisInstance,
+      removeCallback,
    };
 }
