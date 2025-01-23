@@ -1,17 +1,17 @@
 <template>
-   <div :id="wrapperId" ref="lenisWrapper">
+   <div ref="lenisContainer">
       <slot />
    </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, computed } from "#imports";
-import { useLenis } from "#imports";
-
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { useNuxtApp } from "#app";
+const { $lenis } = useNuxtApp();
 const props = defineProps({
    id: {
       type: String,
-      default: "",
+      default: "default",
    },
    options: {
       type: Object,
@@ -21,61 +21,36 @@ const props = defineProps({
          direction: "vertical",
       }),
    },
-   root: {
-      type: Boolean,
-      default: true,
-   },
+   onScroll: Function,
 });
 
-const lenisWrapper = ref<HTMLElement | null>(null);
-const lenisInstance = ref<any>(null);
+const lenisContainer = ref<HTMLElement | null>(null);
 
-// Generate a unique ID if none is provided
-const wrapperId = computed(
-   () => props.id || `lenis-${Math.random().toString(36).substr(2, 9)}`
-);
+onMounted(() => {
+   if (!lenisContainer.value) {
+      console.warn("[Lenis] lenisContainer is not available.");
+      return;
+   }
 
-const { createLenis, destroyLenis, setScrollState } = useLenis();
-
-// Initialize Lenis
-const initLenis = () => {
-   lenisInstance.value = createLenis(wrapperId.value, {
+   // Create the Lenis instance via the plugin
+   $lenis.createLenis(props.id, {
       ...props.options,
-      wrapper: props.root ? undefined : lenisWrapper.value,
+      wrapper: lenisContainer.value,
    });
 
-   lenisInstance.value.on(
-      "scroll",
-      ({ scroll, velocity, progress, isScrolling, direction }) =>
-         setScrollState(wrapperId.value, {
-            scroll,
-            velocity,
-            progress,
-            isScrolling,
-            direction,
-         })
-   );
-
-   // Start the Lenis animation loop
-   const raf = (time: number) => {
-      lenisInstance.value?.raf(time);
-      requestAnimationFrame(raf);
-   };
-   requestAnimationFrame(raf);
-};
-
-// Cleanup Lenis
-const cleanupLenis = () => {
-   if (lenisInstance.value) {
-      lenisInstance.value.destroy();
-      destroyLenis(wrapperId.value);
-      lenisInstance.value = null;
+   // Attach scroll callback if provided
+   if (props.onScroll) {
+      const lenisInstance = $lenis.getLenis(props.id);
+      lenisInstance?.on("scroll", props.onScroll);
    }
-};
+});
 
-// Lifecycle hooks
-onMounted(initLenis);
-onBeforeUnmount(cleanupLenis);
+onBeforeUnmount(() => {
+   const { $lenis } = useNuxtApp();
+
+   // Destroy the Lenis instance via the plugin
+   $lenis.destroyLenis(props.id);
+});
 </script>
 
 <style scoped>

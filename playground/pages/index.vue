@@ -26,7 +26,7 @@ import { useLenis } from "#imports";
 // const scrollEmitter = (val) => {
 //    console.log("scrollEmitter", val);
 // };
-const { getScrollState } = useLenis();
+const { getScrollState, watchScrollState } = useLenis();
 const lenisRef = ref(null);
 const vsOptions = reactive({});
 
