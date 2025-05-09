@@ -1,20 +1,22 @@
 import { Lenis } from "#imports";
 import { defineNuxtPlugin } from "#app";
 import { reactive, ref } from "vue";
-import type { LenisOptions } from "lenis";
+import type { LenisOptions, ScrollCallback, Scrolling } from "lenis";
 // TODO: move to another file
 export type ScrollState = {
    scroll: number;
    velocity: number;
    progress: number;
-   isScrolling: boolean;
+   isScrolling: Scrolling;
    isStopped: boolean;
-   isTouching: boolean;
+   isTouching?: boolean;
    isHorizontal: boolean;
    isLocked: boolean;
    isSmooth: boolean;
    rootElement: HTMLElement | null;
-   direction: 1 | -1;
+   direction: 1 | -1 | 0;
+   lastVelocity: number;
+   targetScroll: number;
 };
 export interface LenisPlugin {
    createLenis: (id: string, options?: LenisOptions) => Lenis;
@@ -59,10 +61,12 @@ export default defineNuxtPlugin((nuxtApp) => {
          isSmooth: false,
          rootElement: null,
          direction: 1,
+         lastVelocity: 0,
+         targetScroll: 0,
       });
 
       // Update scroll state on scroll
-      lenis.on("scroll", (scrollData: any) => {
+      lenis.on("scroll", (scrollData: Lenis) => {
          scrollStates.set(id, {
             scroll: scrollData.scroll,
             velocity: scrollData.velocity,
@@ -75,6 +79,8 @@ export default defineNuxtPlugin((nuxtApp) => {
             isSmooth: scrollData.isSmooth,
             rootElement: scrollData.rootElement,
             direction: scrollData.direction,
+            lastVelocity: scrollData.lastVelocity,
+            targetScroll: scrollData.targetScroll,
          });
       });
 
