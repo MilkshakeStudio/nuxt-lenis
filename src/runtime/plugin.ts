@@ -5,7 +5,9 @@ import type { LenisOptions, ScrollCallback, Scrolling } from "lenis";
 // TODO: move to another file
 export type ScrollState = {
    scroll: number;
+   animatedScroll: number;
    velocity: number;
+   limit: number;
    progress: number;
    isScrolling: Scrolling;
    isStopped: boolean;
@@ -51,8 +53,10 @@ export default defineNuxtPlugin((nuxtApp) => {
       // Initialize scroll state
       scrollStates.set(id, {
          scroll: 0,
+         animatedScroll: 0,
          velocity: 0,
          progress: 0,
+         limit: 0,
          isScrolling: false,
          isStopped: true,
          isTouching: false,
@@ -68,6 +72,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       // Update scroll state on scroll
       lenis.on("scroll", (scrollData: Lenis) => {
          scrollStates.set(id, {
+            limit: scrollData.limit,
+            animatedScroll: scrollData.animatedScroll,
             scroll: scrollData.scroll,
             velocity: scrollData.velocity,
             progress: scrollData.progress,
