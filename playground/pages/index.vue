@@ -32,7 +32,7 @@ import { useLenis } from '#imports'
 // const scrollEmitter = (val) => {
 //    console.log("scrollEmitter", val);
 // };
-const { scrollState, watchScrollState } = useLenis()
+const { scrollState, getLenis } = useLenis()
 const lenisRef = ref(null)
 const vsOptions = reactive({})
 
@@ -45,8 +45,12 @@ watch(
   { deep: true }
 )
 
-const stop = (val) => {}
-const start = (val) => {}
+const stop = (val) => {
+   getLenis().stop();
+}
+const start = (val) => {
+   getLenis().start();
+}
 
 const handleClick = () => {
   console.log('handleClick------', lenisRef.value)
