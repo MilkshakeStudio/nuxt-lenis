@@ -1,12 +1,32 @@
-import { Lenis, useLenis } from "#imports";
+import { Lenis } from "#imports";
 import { defineNuxtPlugin } from "#app";
 import { reactive, ref } from "vue";
 import type { LenisOptions } from "lenis";
+// TODO: move to another file
+export type ScrollState = {
+   scroll: number;
+   velocity: number;
+   progress: number;
+   isScrolling: boolean;
+   isStopped: boolean;
+   isTouching: boolean;
+   isHorizontal: boolean;
+   isLocked: boolean;
+   isSmooth: boolean;
+   rootElement: HTMLElement | null;
+   direction: 1 | -1;
+};
+export interface LenisPlugin {
+   createLenis: (id: string, options?: LenisOptions) => Lenis;
+   getLenis: (id?: string) => Lenis | null;
+   destroyLenis: (id: string) => void;
+   getScrollState: (id?: string) => ScrollState | null;
+}
 
 export default defineNuxtPlugin((nuxtApp) => {
    // Centralized storage for Lenis instances and their scroll states
    const instances = reactive(new Map<string, Lenis>());
-   const scrollStates = reactive(new Map<string, any>());
+   const scrollStates = reactive(new Map<string, ScrollState>());
    const defaultInstance = ref<string | null>(null);
 
    const createLenis = (id: string, options: LenisOptions = {}) => {
@@ -16,6 +36,14 @@ export default defineNuxtPlugin((nuxtApp) => {
       }
 
       const lenis = new Lenis(options);
+      // CUSTOM RAF
+      // if (!options.autoRaf) {
+      //    const raf = (time) => {
+      //       lenis.raf(time);
+      //       requestAnimationFrame(raf);
+      //    };
+      //    requestAnimationFrame(raf);
+      // }
       instances.set(id, lenis);
 
       // Initialize scroll state
@@ -24,12 +52,30 @@ export default defineNuxtPlugin((nuxtApp) => {
          velocity: 0,
          progress: 0,
          isScrolling: false,
-         direction: "vertical",
+         isStopped: true,
+         isTouching: false,
+         isHorizontal: false,
+         isLocked: false,
+         isSmooth: false,
+         rootElement: null,
+         direction: 1,
       });
 
       // Update scroll state on scroll
       lenis.on("scroll", (scrollData: any) => {
-         scrollStates.set(id, { ...scrollStates.get(id), ...scrollData });
+         scrollStates.set(id, {
+            scroll: scrollData.scroll,
+            velocity: scrollData.velocity,
+            progress: scrollData.progress,
+            isScrolling: scrollData.isScrolling,
+            isStopped: scrollData.isStopped,
+            isTouching: scrollData.isTouching,
+            isHorizontal: scrollData.isHorizontal,
+            isLocked: scrollData.isLocked,
+            isSmooth: scrollData.isSmooth,
+            rootElement: scrollData.rootElement,
+            direction: scrollData.direction,
+         });
       });
 
       // Automatically set as default instance
@@ -46,6 +92,7 @@ export default defineNuxtPlugin((nuxtApp) => {
          console.warn(`[Lenis] No instance found for ID "${targetId}".`);
          return null;
       }
+
       return instances.get(targetId);
    };
 
@@ -64,7 +111,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       }
    };
 
-   const getScrollState = (id?: string) => {
+   const getScrollState = (id?: string): ScrollState | null => {
       const targetId = id || defaultInstance.value;
       return scrollStates.get(targetId) || null;
    };

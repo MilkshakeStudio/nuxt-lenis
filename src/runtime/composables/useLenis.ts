@@ -1,16 +1,17 @@
 import { useNuxtApp } from "#app";
 import { watch } from "vue";
+import type { LenisPlugin } from "../plugin";
 
 export function useLenis() {
-   const lenis = inject("lenis");
+   const lenis = useNuxtApp().$lenis as LenisPlugin;
 
    if (!lenis) {
       throw new Error("[Lenis] Lenis is not provided.");
    }
 
-   const watchScrollState = (id: string, callback: (state: any) => void) => {
+   const watchScrollState = (callback: (state: any) => void, id?: string) => {
       watch(
-         () => getScrollState(id),
+         () => lenis.getScrollState(id),
          (state) => {
             if (state) callback(state);
          },
@@ -22,7 +23,7 @@ export function useLenis() {
       createLenis: lenis.createLenis,
       getLenis: lenis.getLenis,
       destroyLenis: lenis.destroyLenis,
-      getScrollState: lenis.getScrollState,
+      scrollState: lenis.getScrollState,
       watchScrollState,
    };
 }

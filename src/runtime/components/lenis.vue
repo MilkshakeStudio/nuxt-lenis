@@ -1,5 +1,5 @@
 <template>
-   <div ref="lenisContainer">
+   <div ref="lenisContainer" :id="id">
       <slot />
    </div>
 </template>
@@ -13,11 +13,16 @@ const props = defineProps({
       type: String,
       default: "default",
    },
+   root: {
+      type: Boolean,
+      default: true,
+   },
    options: {
       type: Object,
       default: () => ({
          smooth: true,
          duration: 1.2,
+         autoRaf: true,
          direction: "vertical",
       }),
    },
@@ -33,23 +38,23 @@ onMounted(() => {
    }
 
    // Create the Lenis instance via the plugin
-   $lenis.createLenis(props.id, {
-      ...props.options,
-      wrapper: lenisContainer.value,
+
+   const options = Object.assign({ autoRaf: true }, props.options, {
+      wrapper: props.root ? window : lenisContainer.value,
    });
+
+   const lenisInstance = $lenis.createLenis(props.id, options);
 
    // Attach scroll callback if provided
    if (props.onScroll) {
-      const lenisInstance = $lenis.getLenis(props.id);
       lenisInstance?.on("scroll", props.onScroll);
    }
 });
 
 onBeforeUnmount(() => {
    const { $lenis } = useNuxtApp();
-
    // Destroy the Lenis instance via the plugin
-   $lenis.destroyLenis(props.id);
+   // $lenis.destroyLenis(props.id);
 });
 </script>
 

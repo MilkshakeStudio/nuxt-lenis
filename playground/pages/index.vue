@@ -7,7 +7,7 @@
          <h2 @click="changeOptions">CHANGE</h2>
          <p>Playground for lenis scroll plugin for nuxt</p>
       </div>
-
+      
       <div />
       <div />
       <div />
@@ -26,12 +26,12 @@ import { useLenis } from "#imports";
 // const scrollEmitter = (val) => {
 //    console.log("scrollEmitter", val);
 // };
-const { getScrollState, watchScrollState } = useLenis();
+const { scrollState, watchScrollState } = useLenis();
 const lenisRef = ref(null);
 const vsOptions = reactive({});
 
 watch(
-   getScrollState,
+   scrollState,
    (scroll) => {
       console.log("WATCHER- SCROLL", scroll);
       // console.log("WATCHER", val);
@@ -46,7 +46,6 @@ const handleClick = () => {
    console.log("handleClick------", lenisRef.value);
 };
 
-const initiated = ({ lenis }) => (lenisLocalVS = lenis);
 const changeOptions = () => {
    // console.log("🐯 changing options");
    vsOptions.duration = vsOptions.duration > 5 ? 0.1 : 10;
@@ -90,7 +89,5 @@ onMounted(() => {
    align-items: flex-end;
 }
 
-.nopointer {
-   pointer-events: none;
-}
+
 </style>
