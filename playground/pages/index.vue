@@ -1,59 +1,65 @@
 <template>
-   <lenis id="wrapper" ref="lenisRef" @click="handleClick">
-      <!-- <div id="content"> -->
-      <div>
-         <h2 @click="stop">STOP</h2>
-         <h2 @click="start">START</h2>
-         <h2 @click="changeOptions">CHANGE</h2>
-         <p>Playground for lenis scroll plugin for nuxt</p>
-      </div>
-      
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <!-- </div> -->
-   </lenis>
+  <lenis id="wrapper" ref="lenisRef" @click="handleClick">
+    <!-- <div id="content"> -->
+    <div>
+      <h2 @click="stop">
+        STOP
+      </h2>
+      <h2 @click="start">
+        START
+      </h2>
+      <h2 @click="changeOptions">
+        CHANGE
+      </h2>
+      <p>Playground for lenis scroll plugin for nuxt</p>
+    </div>
+
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <!-- </div> -->
+  </lenis>
 </template>
 
 <script setup>
-import { ref, reactive, watch, onMounted, computed } from "vue";
-import { useLenis } from "#imports";
+import { ref, reactive, watch, onMounted, computed } from 'vue'
+import { useLenis } from '#imports'
 // import { useLenis } from "#app";
 
 // const scrollEmitter = (val) => {
 //    console.log("scrollEmitter", val);
 // };
-const { scrollState, watchScrollState } = useLenis();
-const lenisRef = ref(null);
-const vsOptions = reactive({});
+const { scrollState, watchScrollState } = useLenis()
+const lenisRef = ref(null)
+const vsOptions = reactive({})
 
 watch(
-   scrollState,
-   (scroll) => {
-      console.log("WATCHER- SCROLL", scroll);
-      // console.log("WATCHER", val);
-   },
-   { deep: true }
-);
+  scrollState,
+  (scroll) => {
+    console.log('WATCHER- SCROLL', scroll)
+    // console.log("WATCHER", val);
+  },
+  { deep: true }
+)
 
-const stop = (val) => {};
-const start = (val) => {};
+const stop = (val) => {}
+const start = (val) => {}
 
 const handleClick = () => {
-   console.log("handleClick------", lenisRef.value);
-};
+  console.log('handleClick------', lenisRef.value)
+}
 
 const changeOptions = () => {
-   // console.log("🐯 changing options");
-   vsOptions.duration = vsOptions.duration > 5 ? 0.1 : 10;
-};
+  // console.log("🐯 changing options");
+  vsOptions.duration = vsOptions.duration > 5 ? 0.1 : 10
+}
 
 onMounted(() => {
-   console.log("handleClick------");
-});
+  console.log('handleClick------')
+})
 </script>
 
 <style>
@@ -88,6 +94,5 @@ onMounted(() => {
    flex-direction: column;
    align-items: flex-end;
 }
-
 
 </style>
