@@ -15,7 +15,7 @@ export default defineNuxtModule<ModuleOptions>({
     name: '@milkshake/nuxt-lenis',
     configKey: 'lenis',
     compatibility: {
-      nuxt: '^3.0.0'
+      nuxt: '^3.0.0 || ^4.0.0'
     }
   },
   defaults: {
@@ -41,7 +41,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     addComponent({
       name: 'Lenis', // name of the component to be used in vue templates
-      filePath: resolve('./runtime/components', 'Lenis.vue')
+      filePath: resolve('./runtime/components', 'lenis.vue')
     })
   }
 })
