@@ -46,10 +46,10 @@ watch(
 )
 
 const stop = (val) => {
-   getLenis().stop();
+  getLenis().stop()
 }
 const start = (val) => {
-   getLenis().start();
+  getLenis().start()
 }
 
 const handleClick = () => {
