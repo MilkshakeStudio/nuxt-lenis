@@ -11,37 +11,37 @@ export interface ModuleOptions {
 }
 
 export default defineNuxtModule<ModuleOptions>({
-  meta: {
-    name: '@milkshake/nuxt-lenis',
-    configKey: 'lenis',
-    compatibility: {
-      nuxt: '^3.0.0'
-    }
-  },
-  defaults: {
-    addPlugin: true
-  },
-  setup (options, nuxt) {
-    const { resolve } = createResolver(import.meta.url)
-
-    addImports([
-      {
-        name: 'default',
-        as: 'Lenis',
-        from: 'lenis'
-      },
-      {
-        name: 'useLenis',
-        as: 'useLenis',
-        from: resolve('./runtime/composables/useLenis')
+   meta: {
+      name: '@milkshake/nuxt-lenis',
+      configKey: 'lenis',
+      compatibility: {
+         nuxt: '^4.0.0'
       }
-    ])
+   },
+   defaults: {
+      addPlugin: true
+   },
+   setup (options, nuxt) {
+      const { resolve } = createResolver(import.meta.url)
 
-    addPlugin(resolve('./runtime/plugin'))
+      addImports([
+         {
+            name: 'default',
+            as: 'Lenis',
+            from: 'lenis'
+         },
+         {
+            name: 'useLenis',
+            as: 'useLenis',
+            from: resolve('./runtime/composables/useLenis')
+         }
+      ])
 
-    addComponent({
-      name: 'Lenis', // name of the component to be used in vue templates
-      filePath: resolve('./runtime/components', 'Lenis.vue')
-    })
-  }
+      addPlugin(resolve('./runtime/plugin'))
+
+      addComponent({
+         name: 'Lenis', // name of the component to be used in vue templates
+         filePath: resolve('./runtime/components', 'Lenis.vue')
+      })
+   }
 })

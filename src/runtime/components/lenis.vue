@@ -7,6 +7,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useNuxtApp } from "#app";
+
 const { $lenis } = useNuxtApp();
 const props = defineProps({
    id: {

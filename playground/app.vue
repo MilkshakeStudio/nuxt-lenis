@@ -8,6 +8,9 @@
         </nuxt-link> &nbsp;
         <nuxt-link to="/about">
           About
+        </nuxt-link> &nbsp;
+        <nuxt-link to="/hooks">
+          Hooks Example
         </nuxt-link>
       </nav>
     </header>
